@@ -1,0 +1,77 @@
+CKAN
+GAMEData
+Internals 
+KSP_x64_data
+logs
+Parts
+PluginData, 
+Plugins
+Resources
+Saves 
+Screenshots 
+Sounds 
+thumbs
+buildID.txt
+buildID64.txt
+KSP.log
+KSP_x64.exe
+Launcher_Data
+LegalNotice.txt
+MiniAVC.log
+PartDatabase.cfg
+Physics.cfg
+readme.txt
+rt_dump.txt
+settings.cfg
+steam_api.dll
+steam_api64.dll
+SteamDep.txt
+*.png
+Ships/VAB/RO *
+Ships/SPH/Aeris 3A.craft
+Ships/SPH/Aeris 4A.craft
+Ships/SPH/Albatross 3.craft
+Ships/SPH/Bug-E Buggy.craft
+Ships/SPH/Crater Crawler.craft
+Ships/SPH/Dove.craft
+Ships/SPH/E42.craft
+Ships/SPH/FAR Firehound MS.craft
+Ships/SPH/FAR SkyEye.craft
+Ships/SPH/Gull.craft
+Ships/SPH/Mallard.craft
+Ships/SPH/Osprey.craft
+Ships/SPH/Prospector Rover.craft
+Ships/SPH/Ravenspear Mk1.craft
+Ships/SPH/Ravenspear Mk3.craft
+Ships/SPH/Ravenspear Mk4.craft
+Ships/SPH/RO Bonanza V35.craft
+Ships/SPH/Rocket-power VTOL.craft
+Ships/SPH/Skywinder AE1.craft
+Ships/SPH/Satellite Launcher.craft
+Ships/SPH/Stratolauncher.craft
+Ships/SPH/Stearwing A300.craft
+Ships/SPH/Thunderbird.craft
+Ships/SPH/Velociteze.craft
+Ships/VAB/AeroEquus.craft
+Ships/VAB/ComSat Lx.craft
+Ships/VAB/Dynawing.craft
+Ships/VAB/FAR Shuttle 'Montauk'.craft
+Ships/VAB/GDLV3.craft
+Ships/VAB/Ion-Powered Space Probe.craft
+Ships/VAB/Jumping Flea.craft
+Ships/VAB/Kerbal 1-5.craft
+Ships/VAB/Kerbal 1.craft
+Ships/VAB/Kerbal 2.craft
+Ships/VAB/Kerbal X.craft
+Ships/VAB/Learstar A1.craft
+Ships/VAB/Orbiter 1A.craft
+Ships/VAB/Orbiter One.craft
+Ships/VAB/PT Series Munsplorer.craft
+Ships/VAB/Rover + Skycrane.craft
+Ships/VAB/Super-Heavy Lander.craft
+Ships/VAB/Two-Stage Lander.craft
+Ships/VAB/Viewmatic Survey Satellite.craft
+Ships/VAB/Z-MAP Satellite Launch Kit.craft
+Ships/VAB/Science Jr.craft
+Ships/VAB/Slim Shuttle.craft
+Ships/VAB/Space Station Core.craft
