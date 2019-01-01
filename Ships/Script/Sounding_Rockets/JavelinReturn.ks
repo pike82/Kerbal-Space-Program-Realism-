@@ -103,14 +103,14 @@ until CurrEngineThrust > 0.99*MaxEngineThrust{ // until upto thrust or the engin
 //Wait until Stage:Ready .
 //SAS on.
 Print "Releasing Clamps".
-Wait until Stage:Ready . // this ensures time between staging engines and clamps so they do not end up being caught up in the same physics tick
+Wait until Stage:Ready . 
 STAGE. // Relase Clamps
 PRINT "Lift off!!".
 local LchAlt is ALT:RADAR.
 
 // Clear tower
 Wait UNTIL ALT:RADAR > sv_ClearanceHeight + LchAlt.
-Wait UNTIL SHIP:Q > 0.015. //Ensure past clearance height and airspeed 0.015 equates to approx 50m/s or 1.5kpa which is high enough to ensure aero stability for most craft small pitching	
+Wait UNTIL SHIP:Q > 0.015. 
 LOCK STEERING TO HEADING(sv_intAzimith, sv_anglePitchover).
 Wait 30.
 Until SHIP:Q < 0.15{
@@ -119,7 +119,7 @@ Until SHIP:Q < 0.15{
 Stage. // realese fairings
 //used for return flights
 Until EngineStartTime + 120 < time:seconds{ // 120 seconds is past when engines should run out
-	if ship:altitude >  ((ship:verticalspeed < 0) and (ship:altitude < 2000)){ // range safe for engine failure
+	if (ship:altitude > destructheight) or ((ship:verticalspeed < 0) and (ship:altitude < 2000)){ // range safe for engine failure
 		wait 1.
 		Local P is SHIP:PARTSNAMED(core:part:Name)[0].
 		Local M is P:GETMODULE("ModuleRangeSafety").
