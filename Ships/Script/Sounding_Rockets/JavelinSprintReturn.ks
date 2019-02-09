@@ -8,11 +8,6 @@ local label is wndw:ADDLABEL("Enter Values").
 set label:STYLE:ALIGN TO "CENTER".
 set label:STYLE:HSTRETCH TO True. // Fill horizontally
 
-local box_alt is wndw:addhlayout().
-	local alt_label is box_alt:addlabel("Destruct altitude (km)").
-	local destvalue is box_alt:ADDTEXTFIELD("100").
-	set destvalue:style:width to 100.
-	set destvalue:style:height to 18.
 
 local box_azi is wndw:addhlayout().
 	local azi_label is box_azi:addlabel("Heading").
@@ -22,7 +17,7 @@ local box_azi is wndw:addhlayout().
 
 local box_pitch is wndw:addhlayout().
 	local pitch_label is box_pitch:addlabel("Start Pitch").
-	local pitchvalue is box_pitch:ADDTEXTFIELD("89").
+	local pitchvalue is box_pitch:ADDTEXTFIELD("60").
 	set pitchvalue:style:width to 100.
 	set pitchvalue:style:height to 18.
 
@@ -37,9 +32,6 @@ UNTIL isDone {
 }
 
 Function Continue {
-		set val to destvalue:text.
-		set val to val:tonumber(0).
-		set destructheight to val*1000.
 
 		set val to azivalue:text.
 		set val to val:tonumber(0).
@@ -53,7 +45,6 @@ Function Continue {
   	set isDone to true.
 }
 
-Print "Will destruct at: " + destructheight + "m". //Range Safety height
 Print "Start Heading: " + sv_intAzimith.
 Print "Start Pitch: " + sv_anglePitchover. //flight pitch
 Local sv_ClearanceHeight is 30. //tower clearance height
@@ -74,11 +65,11 @@ Local EngineStartTime is TIME:SECONDS.
 Local MaxEngineThrust is 0. 
 Local englist is List().
 List Engines.
-LIST ENGINES IN engList. 
-FOR eng IN engList {  
+LIST ENGINES IN engList. //Get List of Engines in the vessel
+FOR eng IN engList {  //Loops through Engines in the Vessel
 	Print "eng:STAGE:" + eng:STAGE.
 	Print STAGE:NUMBER.
-	IF eng:STAGE >= STAGE:NUMBER { 
+	IF eng:STAGE >= STAGE:NUMBER { //Check to see if the engine is in the current Stage
 		SET MaxEngineThrust TO MaxEngineThrust + eng:MAXTHRUST. 
 		Print "Stage Full Engine Thrust:" + MaxEngineThrust. 
 	}
@@ -86,7 +77,7 @@ FOR eng IN engList {
 Print "Checking thrust ok".
 Local CurrEngineThrust is 0.
 Local EngineStartFalied is False.
-until CurrEngineThrust > 0.99*MaxEngineThrust{ 
+until CurrEngineThrust > 0.99*MaxEngineThrust{ // until upto thrust or the engines have attempted to get upto thrust for more than 5 seconds.
 	Set CurrEngineThrust to 0.
 	FOR eng IN engList {  //Loops through Engines in the Vessel
 		IF eng:STAGE >= STAGE:NUMBER { //Check to see if the engine is in the current Stage
@@ -110,34 +101,47 @@ local LchAlt is ALT:RADAR.
 
 // Clear tower
 Wait UNTIL ALT:RADAR > sv_ClearanceHeight + LchAlt.
-Wait UNTIL SHIP:Q > 0.015. //Ensure past clearance height and airspeed 0.015 equates to approx 50m/s or 1.5kpa which is high enough to ensure aero stability for most craft small pitching	
+Wait UNTIL SHIP:Q > 0.015. 
 LOCK STEERING TO HEADING(sv_intAzimith, sv_anglePitchover).
 Wait 20.
+
 Until SHIP:Q < 0.15{
 	Wait 0.2.
 }
 Stage. // realese fairings
 Print "Waiting".
-Until EngineStartTime + 88 < time:seconds{
+Until EngineStartTime + 85 < time:seconds{
 	wait 0.1.
 }
 unlock steering.
-//sas on.
+sas on.
 Print (TIME:SECONDS - EngineStartTime).
 set ship:control:roll to 1.//spin stabilise
 Until AVAILABLETHRUST < 1{
 	Wait 0.1.
 }
-sas off.
+
 Stage.//Release first stage and start ullage
 Wait until Stage:Ready.
 wait 0.5.
 Stage.//Start Engines
 
-Until ship:altitude > destructheight or ((ship:verticalspeed < 0) and (ship:altitude < 200)){
-	wait 2.	
+Until EngineStartTime + 180 < time:seconds{ 
+	if ((ship:verticalspeed < 0) and (ship:altitude < 200)){ // range safe for engine failure
+		wait 1.
+		Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+		Local M is P:GETMODULE("ModuleRangeSafety").
+		M:DOEVENT("Range Safety").
+	}
+	wait 0.1.
+} 
+Stage. //release or arm parachute.
+Lock Throttle to 0.
+Set SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
+until ALT:RADAR < 5000{
+	Wait 2.
 }
-wait 1.
-Local P is SHIP:PARTSNAMED(core:part:Name)[0].
-Local M is P:GETMODULE("ModuleRangeSafety").
-M:DOEVENT("Range Safety").
+for RealChute in ship:modulesNamed("RealChuteModule") {
+	RealChute:doevent("arm parachute").
+	Print "Parchute armed enabled.".
+}

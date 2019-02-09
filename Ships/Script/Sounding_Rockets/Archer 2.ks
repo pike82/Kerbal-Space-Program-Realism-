@@ -78,7 +78,9 @@ Unlock Steering. //keeping this makes the wings try to provide input
 Until AVAILABLETHRUST < 1{
 	Wait 0.1.
 }
-
+Until SHIP:Q < 0.08{///wait until low Q for next stage restart set to 0.2 for no sounding payload
+	Wait 0.2.
+}
 Stage.//Release first stage
 Wait until Stage:Ready.
 Stage.//Start ullage Engines

@@ -8,6 +8,10 @@ local label is wndw:ADDLABEL("Enter Values").
 set label:STYLE:ALIGN TO "CENTER".
 set label:STYLE:HSTRETCH TO True. // Fill horizontally
 
+//Azimuth, Picthover, Pitchdown angle, AP wait, End height(km)
+//Equatorial:90, 80, -10, 120, 160
+//Polar:20, 80, -7, 140, 160 
+
 
 local box_azi is wndw:addhlayout().
 	local azi_label is box_azi:addlabel("Heading").
@@ -180,8 +184,6 @@ Stage.//start ullage
 Wait until Stage:Ready.
 wait 0.5.
 Stage.//start engine
-wait 0.5.
-Stage.//start engine backup
 until ship:periapsis > endheight{
 	Wait 0.1.
 }

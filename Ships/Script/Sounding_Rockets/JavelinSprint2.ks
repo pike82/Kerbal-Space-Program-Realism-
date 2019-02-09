@@ -10,19 +10,19 @@ set label:STYLE:HSTRETCH TO True. // Fill horizontally
 
 local box_alt is wndw:addhlayout().
 	local alt_label is box_alt:addlabel("Destruct altitude (km)").
-	local destvalue is box_alt:ADDTEXTFIELD("100").
+	local destvalue is box_alt:ADDTEXTFIELD("900").
 	set destvalue:style:width to 100.
 	set destvalue:style:height to 18.
 
 local box_azi is wndw:addhlayout().
 	local azi_label is box_azi:addlabel("Heading").
-	local azivalue is box_azi:ADDTEXTFIELD("89").
+	local azivalue is box_azi:ADDTEXTFIELD("270").
 	set azivalue:style:width to 100.
 	set azivalue:style:height to 18.
 
 local box_pitch is wndw:addhlayout().
 	local pitch_label is box_pitch:addlabel("Start Pitch").
-	local pitchvalue is box_pitch:ADDTEXTFIELD("89").
+	local pitchvalue is box_pitch:ADDTEXTFIELD("55").
 	set pitchvalue:style:width to 100.
 	set pitchvalue:style:height to 18.
 
@@ -118,17 +118,17 @@ Until SHIP:Q < 0.15{
 }
 Stage. // realese fairings
 Print "Waiting".
-Until EngineStartTime + 88 < time:seconds{
+Until EngineStartTime + 105 < time:seconds{
 	wait 0.1.
 }
 unlock steering.
-//sas on.
+sas on.
 Print (TIME:SECONDS - EngineStartTime).
 set ship:control:roll to 1.//spin stabilise
 Until AVAILABLETHRUST < 1{
 	Wait 0.1.
 }
-sas off.
+
 Stage.//Release first stage and start ullage
 Wait until Stage:Ready.
 wait 0.5.

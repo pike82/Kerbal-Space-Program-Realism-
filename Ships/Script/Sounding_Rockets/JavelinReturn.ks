@@ -9,8 +9,8 @@ set label:STYLE:ALIGN TO "CENTER".
 set label:STYLE:HSTRETCH TO True. // Fill horizontally
 
 local box_alt is wndw:addhlayout().
-	local alt_label is box_alt:addlabel("Destruct altitude (km)").
-	local destvalue is box_alt:ADDTEXTFIELD("100").
+	local alt_label is box_alt:addlabel("Return altitude (km)").
+	local destvalue is box_alt:ADDTEXTFIELD("150").
 	set destvalue:style:width to 100.
 	set destvalue:style:height to 18.
 
@@ -39,7 +39,7 @@ UNTIL isDone {
 Function Continue {
 		set val to destvalue:text.
 		set val to val:tonumber(0).
-		set destructheight to val*1000.
+		set returnheight to val*1000.
 
 		set val to azivalue:text.
 		set val to val:tonumber(0).
@@ -53,7 +53,7 @@ Function Continue {
   	set isDone to true.
 }
 
-Print "Will destruct at: " + destructheight + "m". //Range Safety height
+Print "Will return at: " + returnheight + "m". //Range Safety height
 Print "Start Heading: " + sv_intAzimith.
 Print "Start Pitch: " + sv_anglePitchover. //flight pitch
 Local sv_ClearanceHeight is 30. //tower clearance height
@@ -112,22 +112,20 @@ local LchAlt is ALT:RADAR.
 Wait UNTIL ALT:RADAR > sv_ClearanceHeight + LchAlt.
 Wait UNTIL SHIP:Q > 0.015. 
 LOCK STEERING TO HEADING(sv_intAzimith, sv_anglePitchover).
-Wait 30.
-Until SHIP:Q < 0.15{
-	Wait 0.2.
-}
-Stage. // realese fairings
 //used for return flights
 Until EngineStartTime + 120 < time:seconds{ // 120 seconds is past when engines should run out
-	if (ship:altitude > destructheight) or ((ship:verticalspeed < 0) and (ship:altitude < 2000)){ // range safe for engine failure
+	if ((ship:verticalspeed < 0) and (ship:altitude < 200)){ // range safe for engine failure
 		wait 1.
 		Local P is SHIP:PARTSNAMED(core:part:Name)[0].
 		Local M is P:GETMODULE("ModuleRangeSafety").
 		M:DOEVENT("Range Safety").
 	}
-
+	if ship:apoapsis > returnheight {
+		Lock Throttle to 0.
+	}
 	wait 0.1.
 } 
+Stage. //release or arm parachute.
 Lock Throttle to 0.
 Set SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 until ALT:RADAR < 5000{

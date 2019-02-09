@@ -113,7 +113,7 @@ Wait UNTIL ALT:RADAR > sv_ClearanceHeight + LchAlt.
 Wait UNTIL SHIP:Q > 0.015. //Ensure past clearance height and airspeed 0.015 equates to approx 50m/s or 1.5kpa which is high enough to ensure aero stability for most craft small pitching	
 LOCK STEERING TO HEADING(sv_intAzimith, sv_anglePitchover).
 Wait 30.
-Until SHIP:Q < 0.15{
+Until SHIP:Q < 0.015{
 	Wait 0.2.
 }
 Stage. // realese fairings

@@ -1,10 +1,10 @@
 // Get Mission Values
 
 LOCAL gui is gui(200).
-LOCAL label is gui:ADDLABEL("Enter destruct height in km").
+LOCAL label is gui:ADDLABEL("Enter return height in km").
 SET label:STYLE:ALIGN TO "CENTER".
 SET label:STYLE:HSTRETCH TO True. // Fill horizontally
-LOCAL destvalue is gui:ADDTEXTFIELD("").
+LOCAL destvalue is gui:ADDTEXTFIELD("150").
 SET destvalue:STYLE:ALIGN TO "CENTER".
 SET destvalue:STYLE:HSTRETCH TO True. // Fill horizontally
 set destvalue:style:width to 300.
@@ -16,13 +16,13 @@ UNTIL isDone {
     set destvalue:onconfirm to { 
 		parameter val.
 		set val to val:tonumber(0).
-		set destructheight to val*1000.
+		set returnheight to val*1000.
 		SET isDone TO TRUE.
 	}.
 	WAIT 0.5.
 }
 gui:HIDE().
-Print "Will destruct at: " + destructheight + "m". //Range Safety height
+Print "Will return at: " + returnheight + "m". //Range Safety height
 Local sv_ClearanceHeight is 10. //tower clearance height
 
 //Prelaunch
@@ -75,15 +75,18 @@ wait 5.
 Unlock Steering. //keeping this makes the wings try to provide input
 //used for return flights
 Until EngineStartTime + 120 < time:seconds{ // 120 seconds is past when engines should run out
-	if ship:altitude >  ((ship:verticalspeed < 0) and (ship:altitude < 2000)){ // range safe for engine failure
+	if ((ship:verticalspeed < 0) and (ship:altitude < 2000)){ // range safe for engine failure
 		wait 1.
 		Local P is SHIP:PARTSNAMED(core:part:Name)[0].
 		Local M is P:GETMODULE("ModuleRangeSafety").
 		M:DOEVENT("Range Safety").
 	}
-
+	if ship:apoapsis > returnheight {
+		Lock Throttle to 0.
+	}
 	wait 0.1.
 } 
+stage.
 Lock Throttle to 0.
 Set SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 until ALT:RADAR < 5000{
