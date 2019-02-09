@@ -1,15 +1,15 @@
-ship = Archer 300
+ship = Archer-Return
 version = 1.3.1
 description = 
 type = VAB
-size = 2.12239027,9.5821228,2.12239075
+size = 2.12238955,8.38261986,2.12239099
 PART
 {
 	part = RP0probeSounding0-3m_4292410692
 	partName = Part
-	pos = -1.41262662,13.4272423,1.18461788
+	pos = -0.545117915,11.9585381,0.833270073
 	attPos = 0,0,0
-	attPos0 = -1.41262662,13.4272423,1.18461788
+	attPos0 = -0.545117915,11.5585632,0.833270073
 	rot = 0,0,0,1
 	attRot = 0,0,0,1
 	attRot0 = 0,0,0,1
@@ -27,10 +27,12 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = 0,0,0
-	link = RFTank-I_4293557362
-	link = proceduralNoseCone_4291770212
-	attN = top,proceduralNoseCone_4291770212
-	attN = bottom,RFTank-I_4293557362
+	link = sensorThermometer_4292341476
+	link = sensorBarometer_4292339614
+	link = RFTank-I_4288666840
+	link = RC.stack_4293184040
+	attN = top,RFTank-I_4288666840
+	attN = bottom,RC.stack_4293184040
 	EVENTS
 	{
 	}
@@ -115,7 +117,7 @@ PART
 	{
 		name = KOSNameTag
 		isEnabled = True
-		nameTag = Archer
+		nameTag = ArcherReturn
 		stagingEnabled = True
 		EVENTS
 		{
@@ -929,11 +931,393 @@ PART
 }
 PART
 {
-	part = RFTank-I_4293557362
+	part = sensorThermometer_4292341476
 	partName = Part
-	pos = -1.41262662,12.4972429,1.18461788
+	pos = -0.636878133,11.9871244,0.822925866
+	attPos = 0,0,0
+	attPos0 = -0.0917602181,0.0285863876,-0.0103442073
+	rot = 0,0.707106709,-0.707106829,-2.5879543E-09
+	attRot = 0,0,0,1
+	attRot0 = 0,0.707106709,-0.707106829,-2.5879543E-09
+	mir = 1,1,1
+	symMethod = Radial
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	srfN = srfAttach,RP0probeSounding0-3m_4292410692
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleEnviroSensor
+		isEnabled = True
+		sensorActive = False
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			ToggleAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = GeometryPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FARAeroPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FARPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleScienceExperiment
+		isEnabled = True
+		Deployed = False
+		Inoperable = False
+		cooldownToGo = 0
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			DeployAction
+			{
+				actionGroup = RCS
+			}
+			ResetAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleTagInstruments
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleAeroReentry
+		isEnabled = True
+		dead = False
+		crashTolerance = 8
+		internalDamage = 0
+		stagingEnabled = True
+		damageCube = 0, 0, 0, 0, 0, 0
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleShowInfo
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = sensorBarometer_4292339614
+	partName = Part
+	pos = -0.453639507,11.9871244,0.839274287
+	attPos = 0,0,0
+	attPos0 = 0.0914784074,0.0285863876,0.00600421429
+	rot = 0,0.707106709,-0.707106829,-2.5879543E-09
+	attRot = 0,0,0,1
+	attRot0 = 0,0.707106709,-0.707106829,-2.5879543E-09
+	mir = 1,1,1
+	symMethod = Radial
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	srfN = srfAttach,RP0probeSounding0-3m_4292410692
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleEnviroSensor
+		isEnabled = True
+		sensorActive = False
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			ToggleAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = GeometryPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FARAeroPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FARPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleScienceExperiment
+		isEnabled = True
+		Deployed = False
+		Inoperable = False
+		cooldownToGo = 0
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			DeployAction
+			{
+				actionGroup = RCS
+			}
+			ResetAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleTagInstruments
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleAeroReentry
+		isEnabled = True
+		dead = False
+		crashTolerance = 8
+		internalDamage = 0
+		stagingEnabled = True
+		damageCube = 0, 0, 0, 0, 0, 0
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleShowInfo
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = RFTank-I_4288666840
+	partName = Part
+	pos = -0.545117915,12.3117056,0.833270073
 	attPos = 0,0.223162651,0
-	attPos0 = 0,-0.180005074,0
+	attPos0 = 0,0.130004883,0
 	rot = 0,0,0,1
 	attRot = 0,0,0,1
 	attRot0 = 0,0,0,1
@@ -948,12 +1332,12 @@ PART
 	sqor = -1
 	sepI = -1
 	attm = 0
-	modCost = 16.176302
-	modMass = -0.989397109
+	modCost = 0.0208075736
+	modMass = -0.999532938
 	modSize = 0,0,0
-	link = RFTank-I_4291787314
-	attN = top,RP0probeSounding0-3m_4292410692
-	attN = bottom,RFTank-I_4291787314
+	link = proceduralNoseCone_4291770212
+	attN = top,proceduralNoseCone_4291770212
+	attN = bottom,RP0probeSounding0-3m_4292410692
 	EVENTS
 	{
 	}
@@ -968,10 +1352,10 @@ PART
 		name = ProceduralPart
 		isEnabled = True
 		tempColliderCenter = (0, 0, 0)
-		tempColliderSize = (0.5, 1.79999924, 0.5)
-		textureSet = BlueSide
-		shapeName = Cylinder
-		moduleCost = 0.00338231726
+		tempColliderSize = (0.173205137, 0.200000763, 0.173205137)
+		textureSet = Original
+		shapeName = Fillet Cylinder
+		moduleCost = 4.00867248E-05
 		stagingEnabled = True
 		EVENTS
 		{
@@ -987,8 +1371,8 @@ PART
 	{
 		name = ProceduralShapeCylinder
 		isEnabled = True
-		diameter = 0.5
-		length = 1.80000007
+		diameter = 1
+		length = 1
 		stagingEnabled = True
 		EVENTS
 		{
@@ -1022,9 +1406,9 @@ PART
 	{
 		name = ProceduralShapePill
 		isEnabled = True
-		diameter = 0.300000012
-		length = 0.400000006
-		fillet = 0.21100001
+		diameter = 0.200000003
+		length = 0.200000003
+		fillet = 0.200000003
 		stagingEnabled = True
 		EVENTS
 		{
@@ -1040,7 +1424,7 @@ PART
 	{
 		name = ProceduralShapeBezierCone
 		isEnabled = True
-		selectedShape = Round #3
+		selectedShape = Round #1
 		topDiameter = 0.5
 		bottomDiameter = 1
 		length = 1
@@ -1120,13 +1504,13 @@ PART
 	{
 		name = ModuleFuelTanks
 		isEnabled = True
-		type = Tank-I-HP
+		type = Tank-I
 		utilization = 88
-		mass = 0.0106028756
+		mass = 0.000467046135
 		_numberOfAddedMLILayers = 0
 		partPrevTemperature = -1
 		stagingEnabled = True
-		volume = 311.01769999999999
+		volume = 3.6861000000000002
 		EVENTS
 		{
 		}
@@ -1138,7 +1522,7 @@ PART
 			name = LqdOxygen
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 90.1500015
@@ -1152,7 +1536,7 @@ PART
 			name = Kerosene
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1166,7 +1550,7 @@ PART
 			name = LqdHydrogen
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.0149999997
 			loss_rate = 0
 			temperature = 20.1499996
@@ -1180,7 +1564,7 @@ PART
 			name = NTO
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1194,7 +1578,7 @@ PART
 			name = UDMH
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1208,7 +1592,7 @@ PART
 			name = Aerozine50
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1222,7 +1606,7 @@ PART
 			name = MMH
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1236,7 +1620,7 @@ PART
 			name = HTP
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1250,7 +1634,7 @@ PART
 			name = AvGas
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1264,7 +1648,7 @@ PART
 			name = IRFNA-III
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1278,7 +1662,7 @@ PART
 			name = NitrousOxide
 			note = 
 			utilization = 100
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1292,7 +1676,7 @@ PART
 			name = Aniline
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1306,7 +1690,7 @@ PART
 			name = Ethanol75
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1320,7 +1704,7 @@ PART
 			name = Ethanol90
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1334,7 +1718,7 @@ PART
 			name = Ethanol
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1348,7 +1732,7 @@ PART
 			name = LqdAmmonia
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 237.649994
@@ -1362,7 +1746,7 @@ PART
 			name = LqdMethane
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 111.449997
@@ -1376,7 +1760,7 @@ PART
 			name = ClF3
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1390,7 +1774,7 @@ PART
 			name = ClF5
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1404,7 +1788,7 @@ PART
 			name = Diborane
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 2.3000000000000001E-10
 			temperature = 180.649994
@@ -1418,7 +1802,7 @@ PART
 			name = Pentaborane
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1432,7 +1816,7 @@ PART
 			name = Ethane
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 2.5000000000000002E-10
 			temperature = 184.649994
@@ -1446,7 +1830,7 @@ PART
 			name = Ethylene
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 3.4999999999999998E-10
 			temperature = 169.449997
@@ -1460,7 +1844,7 @@ PART
 			name = OF2
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 1.0000000000000001E-09
 			temperature = 128.399994
@@ -1474,7 +1858,7 @@ PART
 			name = LqdFluorine
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 5.4999999999999996E-09
 			temperature = 85.0400009
@@ -1488,7 +1872,7 @@ PART
 			name = N2F4
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 1.7000000000000001E-10
 			temperature = 200.149994
@@ -1502,7 +1886,7 @@ PART
 			name = Methanol
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1516,7 +1900,7 @@ PART
 			name = Furfuryl
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1530,7 +1914,7 @@ PART
 			name = UH25
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1544,7 +1928,7 @@ PART
 			name = Tonka250
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1558,7 +1942,7 @@ PART
 			name = Tonka500
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1572,7 +1956,7 @@ PART
 			name = IWFNA
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1586,7 +1970,7 @@ PART
 			name = IRFNA-IV
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1600,7 +1984,7 @@ PART
 			name = AK20
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1614,7 +1998,7 @@ PART
 			name = AK27
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1628,7 +2012,7 @@ PART
 			name = MON3
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1642,7 +2026,7 @@ PART
 			name = MON10
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1656,7 +2040,7 @@ PART
 			name = Hydyne
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1670,63 +2054,7 @@ PART
 			name = Syntin
 			note = 
 			utilization = 1
-			mass = 0.00026999999
-			cost = 0.00249999994
-			loss_rate = 0
-			temperature = 300
-			fillable = True
-			techRequired = 
-			amount = 0
-			maxAmount = 0
-		}
-		TANK
-		{
-			name = Hydrazine
-			note = 
-			utilization = 1
-			mass = 0.00026999999
-			cost = 0.00249999994
-			loss_rate = 0
-			temperature = 300
-			fillable = True
-			techRequired = 
-			amount = 0
-			maxAmount = 0
-		}
-		TANK
-		{
-			name = Nitrogen
-			note = 
-			utilization = 200
-			mass = 0.00026999999
-			cost = 0.00249999994
-			loss_rate = 0
-			temperature = 300
-			fillable = True
-			techRequired = 
-			amount = 0
-			maxAmount = 0
-		}
-		TANK
-		{
-			name = Helium
-			note = 
-			utilization = 200
-			mass = 0.00026999999
-			cost = 0.00249999994
-			loss_rate = 0
-			temperature = 300
-			fillable = True
-			techRequired = 
-			amount = 0
-			maxAmount = 0
-		}
-		TANK
-		{
-			name = CaveaB
-			note = 
-			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
@@ -1740,28 +2068,14 @@ PART
 			name = LeadBallast
 			note = 
 			utilization = 1
-			mass = 0.00026999999
+			mass = 0.000112499998
 			cost = 0.00249999994
 			loss_rate = 0
 			temperature = 300
 			fillable = True
 			techRequired = 
-			amount = 0
-			maxAmount = 0
-		}
-		TANK
-		{
-			name = SoundingPayload
-			note = 
-			utilization = 1
-			mass = 0
-			cost = 0
-			loss_rate = 0
-			temperature = 300
-			fillable = True
-			techRequired = 
-			amount = 311.01769999999993
-			maxAmount = 311.01769999999993
+			amount = 3.6861000000000002
+			maxAmount = 3.6861000000000002
 		}
 		UPGRADESAPPLIED
 		{
@@ -1818,23 +2132,23 @@ PART
 	}
 	RESOURCE
 	{
-		name = SoundingPayload
-		amount = 311.01769999999993
-		maxAmount = 311.01769999999993
+		name = LeadBallast
+		amount = 3.6861000000000002
+		maxAmount = 3.6861000000000002
 		flowState = True
 		isTweakable = True
 		hideFlow = False
-		isVisible = True
+		isVisible = False
 		flowMode = Both
 	}
 }
 PART
 {
-	part = RFTank-I_4291787314
+	part = proceduralNoseCone_4291770212
 	partName = Part
-	pos = -1.41262662,10.0972328,1.18461788
-	attPos = 0,-0.469994545,0
-	attPos0 = 0,-2.40001011,0
+	pos = -0.545117915,12.3721361,0.833270073
+	attPos = 0,-0.489579201,0
+	attPos0 = 0,0.550009727,0
 	rot = 0,0,0,1
 	attRot = 0,0,0,1
 	attRot0 = 0,0,0,1
@@ -1849,11 +2163,733 @@ PART
 	sqor = -1
 	sepI = -1
 	attm = 0
+	modCost = 0.390101671
+	modMass = -0.994694591
+	modSize = 0,0,0
+	attN = bottom,RFTank-I_4288666840
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ProceduralPart
+		isEnabled = True
+		tempColliderCenter = (0, 0, 0)
+		tempColliderSize = (0.5, 0.899999619, 0.5)
+		textureSet = WhiteSide
+		shapeName = Smooth Cone
+		moduleCost = 0.390101671
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ProceduralShapeBezierCone
+		isEnabled = True
+		selectedShape = Peaked #1
+		topDiameter = 0
+		bottomDiameter = 0.5
+		length = 0.900000036
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TankContentSwitcher
+		isEnabled = True
+		tankVolume = 0.0780203342
+		mass = 0.00530538289
+		tankType = Structural
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = GeometryPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FARAeroPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FARPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleToolingPTank
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleAeroReentry
+		isEnabled = True
+		dead = False
+		crashTolerance = 8
+		internalDamage = 0
+		stagingEnabled = True
+		damageCube = 0, 0, 0, 0, 0, 0
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleShowInfo
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = RC.stack_4293184040
+	partName = Part
+	pos = -0.545117915,11.8627787,0.833270073
+	attPos = 0,0,0
+	attPos0 = 0,-0.0957593918,0
+	rot = 0,0,0,1
+	attRot = 0,0,0,1
+	attRot0 = 0,0,0,1
+	mir = 1,1,1
+	symMethod = Radial
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = 0
+	resPri = 0
+	dstg = 0
+	sidx = 0
+	sqor = 0
+	sepI = -1
+	attm = 0
+	modCost = 147
+	modMass = -0.165612802
+	modSize = 0,0,0
+	link = SXTProbeGooo_4290719808
+	attN = top,RP0probeSounding0-3m_4292410692
+	attN = bottom,SXTProbeGooo_4290719808
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = RealChuteModule
+		isEnabled = True
+		caseMass = 0.00800000038
+		cutSpeed = 0.5
+		timer = 0
+		mustGoDown = True
+		deployOnGround = False
+		spareChutes = 5
+		initiated = True
+		wait = True
+		armed = False
+		oneWasDeployed = False
+		staged = False
+		launched = False
+		chuteCount = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			ActionDeploy
+			{
+				actionGroup = None
+			}
+			ActionCut
+			{
+				actionGroup = None
+			}
+			ActionArm
+			{
+				actionGroup = None
+			}
+			ActionDisarm
+			{
+				actionGroup = None
+			}
+		}
+		PARACHUTE
+		{
+			material = Nylon
+			preDeployedDiameter = 1.10000002
+			deployedDiameter = 21.6000004
+			minIsPressure = False
+			capOff = False
+			minDeployment = 3000
+			minPressure = 0.00999999978
+			deploymentAlt = 500
+			cutAlt = -1
+			preDeploymentSpeed = 2
+			deploymentSpeed = 4
+			time = 0
+			parachuteName = RC_canopy
+			baseParachuteName = RC_canopy
+			capName = cap2
+			preDeploymentAnimation = RC_chute_semi_deploy
+			deploymentAnimation = RC_chute_full_deploy
+			forcedOrientation = 20
+			depState = STOWED
+		}
+		PARACHUTE
+		{
+			material = Nylon
+			preDeployedDiameter = 1.10000002
+			deployedDiameter = 21.6000004
+			minIsPressure = False
+			capOff = False
+			minDeployment = 5000
+			minPressure = 0.00999999978
+			deploymentAlt = 1000
+			cutAlt = -1
+			preDeploymentSpeed = 2
+			deploymentSpeed = 6
+			time = 0
+			parachuteName = RC_canopy2
+			baseParachuteName = RC_canopy2
+			capName = cap
+			preDeploymentAnimation = RC_chute2_semi_deploy
+			deploymentAnimation = RC_chute2_full_deploy
+			forcedOrientation = 20
+			depState = STOWED
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ProceduralChute
+		isEnabled = True
+		caseId = 0
+		lastCaseId = 0
+		size = 16
+		lastSize = 16
+		planets = 0
+		presetId = 0
+		originalSize = (1, 1, 1)
+		top = 0.164399996
+		bottom = -0.164399996
+		debut = 1
+		initiated = True
+		mustGoDown = True
+		deployOnGround = False
+		secondaryChute = True
+		timer = 0s
+		cutSpeed = 0.5
+		spares = 5
+		landingAlt = 0
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		CHUTE
+		{
+			chuteID = 0
+			modelID = 0
+			typeID = 0
+			lastTypeID = 0
+			position = -0.545117915,11.8627787,0.32427007
+			isPressure = False
+			calcSelect = True
+			getMass = True
+			useDry = True
+			preDepDiam = 1.5
+			depDiam = 36
+			predepClause = 3000
+			mass = 10
+			landingSpeed = 6
+			deceleration = 10
+			refDepAlt = 700
+			chuteCount = 1
+			deploymentAlt = 500
+			cutAlt = 
+			preDepSpeed = 2
+			depSpeed = 4
+		}
+		CHUTE
+		{
+			chuteID = 0
+			modelID = 0
+			typeID = 0
+			lastTypeID = 0
+			position = -0.545117915,11.8627787,1.34227014
+			isPressure = False
+			calcSelect = True
+			getMass = True
+			useDry = True
+			preDepDiam = 1.5
+			depDiam = 36
+			predepClause = 5000
+			mass = 10
+			landingSpeed = 6
+			deceleration = 10
+			refDepAlt = 700
+			chuteCount = 1
+			deploymentAlt = 1000
+			cutAlt = 
+			preDepSpeed = 2
+			depSpeed = 6
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = GeometryPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FARAeroPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FARPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleConnectedLivingSpace
+		isEnabled = True
+		passable = True
+		passableWhenSurfaceAttached = False
+		surfaceAttachmentsPassable = False
+		passablenodes = 
+		impassablenodes = 
+		spaceName = Parachute - Stack (Double)
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleAeroReentry
+		isEnabled = True
+		dead = False
+		crashTolerance = 8
+		internalDamage = 0
+		stagingEnabled = True
+		damageCube = 0, 0, 0, 0, 0, 0
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleShowInfo
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = SXTProbeGooo_4290719808
+	partName = Part
+	pos = -0.545117915,11.569253,0.833270073
+	attPos = 0,0,0
+	attPos0 = 0,-0.293525696,0
+	rot = 0,0,0,1
+	attRot = 0,0,0,1
+	attRot0 = 0,0,0,1
+	mir = 1,1,1
+	symMethod = Radial
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = 0
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	link = RFTank-I_4291787314
+	attN = top,RC.stack_4293184040
+	attN = bottom,RFTank-I_4291787314
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleAnimateGeneric
+		isEnabled = True
+		aniState = LOCKED
+		animSwitch = True
+		animTime = 0
+		animSpeed = 1
+		deployPercent = 100
+		animationIsDisabled = False
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			ToggleAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = GeometryPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FARAeroPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FARPartModule
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleScienceExperiment
+		isEnabled = True
+		Deployed = False
+		Inoperable = False
+		cooldownToGo = 0
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			DeployAction
+			{
+				actionGroup = None
+			}
+			ResetAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleTagInstruments
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleAeroReentry
+		isEnabled = True
+		dead = False
+		crashTolerance = 8
+		internalDamage = 0
+		stagingEnabled = True
+		damageCube = 0, 0, 0, 0, 0, 0
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleShowInfo
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = RFTank-I_4291787314
+	partName = Part
+	pos = -0.545117915,9.84148216,0.833270073
+	attPos = 0,-0.469994545,0
+	attPos0 = 0,-1.72777081,0
+	rot = 0,0,0,1
+	attRot = 0,0,0,1
+	attRot0 = 0,0,0,1
+	mir = 1,1,1
+	symMethod = Radial
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = 0
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
 	modCost = 2.5293653
 	modMass = -0.84237057
 	modSize = 0,0,0
 	link = RFTank-I_4288323300
-	attN = top,RFTank-I_4293557362
+	attN = top,SXTProbeGooo_4290719808
 	attN = bottom,RFTank-I_4288323300
 	EVENTS
 	{
@@ -2755,7 +3791,7 @@ PART
 {
 	part = RFTank-I_4288323300
 	partName = Part
-	pos = -1.41262662,7.09720802,1.18461788
+	pos = -0.545117915,6.84145737,0.833270073
 	attPos = 0,-0.469994545,0
 	attPos0 = 0,-3.0000248,0
 	rot = 0,0,0,1
@@ -2765,7 +3801,7 @@ PART
 	symMethod = Radial
 	autostrutMode = Off
 	rigidAttachment = False
-	istg = -1
+	istg = 0
 	resPri = 0
 	dstg = 0
 	sidx = -1
@@ -3685,7 +4721,7 @@ PART
 {
 	part = ROAerobeeSustainer_4288323194
 	partName = Part
-	pos = -1.35857332,5.4972086,1.27896976
+	pos = -0.491064608,5.24145794,0.927621901
 	attPos = 0,0,0
 	attPos0 = 0.0540533066,-2.59999895,0.0943518281
 	rot = -1.68587405E-07,0,0,1
@@ -3695,11 +4731,11 @@ PART
 	symMethod = Radial
 	autostrutMode = Off
 	rigidAttachment = False
-	istg = 1
+	istg = 2
 	resPri = 0
 	dstg = 0
 	sidx = 0
-	sqor = 1
+	sqor = 2
 	sepI = -1
 	attm = 1
 	modCost = 10
@@ -4403,7 +5439,7 @@ PART
 {
 	part = ROAerobeeSustainer_4288323048
 	partName = Part
-	pos = -1.35794222,5.4972086,1.09063041
+	pos = -0.490433484,5.24145794,0.739282608
 	attPos = 0,0,0
 	attPos0 = 0.0546844304,-2.59999895,-0.0939874649
 	rot = -8.42936956E-08,0.866025448,1.46000986E-07,0.49999997
@@ -4413,11 +5449,11 @@ PART
 	symMethod = Radial
 	autostrutMode = Off
 	rigidAttachment = False
-	istg = 1
+	istg = 2
 	resPri = 0
 	dstg = 0
 	sidx = 0
-	sqor = 1
+	sqor = 2
 	sepI = -1
 	attm = 1
 	modCost = 10
@@ -5121,7 +6157,7 @@ PART
 {
 	part = ROAerobeeSustainer_4288322902
 	partName = Part
-	pos = -1.52136445,5.4972086,1.18425345
+	pos = -0.653855681,5.24145794,0.83290571
 	attPos = 0,0,0
 	attPos0 = -0.108737767,-2.59999895,-0.000364363194
 	rot = 8.42937098E-08,0.866025388,1.46000971E-07,-0.50000006
@@ -5131,11 +6167,11 @@ PART
 	symMethod = Radial
 	autostrutMode = Off
 	rigidAttachment = False
-	istg = 1
+	istg = 2
 	resPri = 0
 	dstg = 0
 	sidx = 0
-	sqor = 1
+	sqor = 2
 	sepI = -1
 	attm = 1
 	modCost = 10
@@ -5499,9 +6535,9 @@ PART
 		operatingTime = 0
 		lastMET = 0
 		initialized = False
-		currentFlightData = 5119.45996
-		initialFlightData = 5119.45996
-		missionStartTime = 9906860.3772779815
+		currentFlightData = 0
+		initialFlightData = 0
+		missionStartTime = 0
 		stagingEnabled = True
 		EVENTS
 		{
@@ -5839,7 +6875,7 @@ PART
 {
 	part = RO-B9ProcCS-Early_4288629316
 	partName = Part
-	pos = -1.33087969,5.85828972,0.948842883
+	pos = -0.463370919,5.60253906,0.597495079
 	attPos = -0.0907450318,-0.558670759,0.338665128
 	attPos0 = 0.0817470551,-1.2389183,-0.235774994
 	rot = 0.36542955,0.373483837,0.60493654,0.600851774
@@ -5849,7 +6885,7 @@ PART
 	symMethod = Radial
 	autostrutMode = Off
 	rigidAttachment = False
-	istg = -1
+	istg = 0
 	resPri = 0
 	dstg = 0
 	sidx = -1
@@ -6047,7 +7083,7 @@ PART
 {
 	part = RO-B9ProcCS-Early_4288319854
 	partName = Part
-	pos = -1.64840162,5.85828972,1.1028707
+	pos = -0.780892909,5.60253906,0.751522958
 	attPos = -0.0907450318,-0.558670759,0.338665128
 	attPos0 = -0.235774994,-1.2389183,-0.0817470551
 	rot = 0.686152458,0.688959301,0.169357017,0.160773411
@@ -6057,7 +7093,7 @@ PART
 	symMethod = Radial
 	autostrutMode = Off
 	rigidAttachment = False
-	istg = -1
+	istg = 0
 	resPri = 0
 	dstg = 0
 	sidx = -1
@@ -6255,7 +7291,7 @@ PART
 {
 	part = RO-B9ProcCS-Early_4288319774
 	partName = Part
-	pos = -1.49437356,5.85828972,1.42039287
+	pos = -0.62686491,5.60253906,1.06904507
 	attPos = -0.0907450318,-0.558670759,0.338665128
 	attPos0 = -0.0817470551,-1.2389183,0.235774994
 	rot = 0.60493654,0.600851774,-0.36542958,-0.373483866
@@ -6265,7 +7301,7 @@ PART
 	symMethod = Radial
 	autostrutMode = Off
 	rigidAttachment = False
-	istg = -1
+	istg = 0
 	resPri = 0
 	dstg = 0
 	sidx = -1
@@ -6463,7 +7499,7 @@ PART
 {
 	part = RO-B9ProcCS-Early_4288319694
 	partName = Part
-	pos = -1.17685151,5.85828972,1.26636481
+	pos = -0.309342861,5.60253906,0.915017068
 	attPos = -0.0907450318,-0.558670759,0.338665128
 	attPos0 = 0.235774994,-1.2389183,0.0817470551
 	rot = 0.169357017,0.160773411,-0.686152458,-0.688959301
@@ -6473,7 +7509,7 @@ PART
 	symMethod = Radial
 	autostrutMode = Off
 	rigidAttachment = False
-	istg = -1
+	istg = 0
 	resPri = 0
 	dstg = 0
 	sidx = -1
@@ -6671,7 +7707,7 @@ PART
 {
 	part = launchClamp1_4288257398
 	partName = Part
-	pos = -1.75179398,6.58601379,0.184575558
+	pos = -0.884285271,6.33026314,-0.166772246
 	attPos = 0,0,0
 	attPos0 = -0.339167356,-0.511194229,-1.00004232
 	rot = -0.000506670156,-0.156434372,8.02486247E-05,-0.987688243
@@ -6681,12 +7717,12 @@ PART
 	symMethod = Radial
 	autostrutMode = Off
 	rigidAttachment = False
-	istg = 0
+	istg = 1
 	resPri = 0
 	dstg = 0
 	sidx = 0
-	sqor = 0
-	sepI = 0
+	sqor = 1
+	sepI = 1
 	attm = 1
 	modCost = 0
 	modMass = 0
@@ -6706,8 +7742,8 @@ PART
 	{
 		name = LaunchClamp
 		isEnabled = True
-		scaleFactor = 2.80818844
-		height = 7.07802486
+		scaleFactor = 2.70672011
+		height = 6.82227421
 		stagingEnabled = True
 		towerRot = 8.02486029E-05,0.987688243,0.000506670156,0.156434417
 		EVENTS
@@ -6891,7 +7927,7 @@ PART
 {
 	part = launchClamp1_4288318142
 	partName = Part
-	pos = -1.07345915,6.58601379,2.1846602
+	pos = -0.205950439,6.33026314,1.83331239
 	attPos = 0,0,0
 	attPos0 = 0.339167446,-0.511194229,1.00004232
 	rot = 8.02486466E-05,-0.987688243,0.000506670156,0.156434417
@@ -6901,12 +7937,12 @@ PART
 	symMethod = Radial
 	autostrutMode = Off
 	rigidAttachment = False
-	istg = 0
+	istg = 1
 	resPri = 0
 	dstg = 0
 	sidx = 0
-	sqor = 0
-	sepI = 0
+	sqor = 1
+	sepI = 1
 	attm = 1
 	modCost = 0
 	modMass = 0
@@ -6926,8 +7962,8 @@ PART
 	{
 		name = LaunchClamp
 		isEnabled = True
-		scaleFactor = 2.80818844
-		height = 7.07802486
+		scaleFactor = 2.70672011
+		height = 6.82227421
 		stagingEnabled = True
 		towerRot = 0.000506670156,-0.156434461,-8.02486247E-05,0.987688243
 		EVENTS
@@ -7101,208 +8137,6 @@ PART
 				actionGroup = None
 				active = False
 			}
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-}
-PART
-{
-	part = proceduralNoseCone_4291770212
-	partName = Part
-	pos = -1.41262662,13.8273916,1.18461788
-	attPos = 0,-0.0798549652,0
-	attPos0 = 0,0.480004311,0
-	rot = 0,0,0,1
-	attRot = 0,0,0,1
-	attRot0 = 0,0,0,1
-	mir = 1,1,1
-	symMethod = Radial
-	autostrutMode = Off
-	rigidAttachment = False
-	istg = -1
-	resPri = 0
-	dstg = 0
-	sidx = -1
-	sqor = -1
-	sepI = -1
-	attm = 0
-	modCost = 0.390101671
-	modMass = -0.994694591
-	modSize = 0,0,0
-	attN = bottom,RP0probeSounding0-3m_4292410692
-	EVENTS
-	{
-	}
-	ACTIONS
-	{
-	}
-	PARTDATA
-	{
-	}
-	MODULE
-	{
-		name = ProceduralPart
-		isEnabled = True
-		tempColliderCenter = (0, 0, 0)
-		tempColliderSize = (0.5, 0.899999619, 0.5)
-		textureSet = WhiteSide
-		shapeName = Smooth Cone
-		moduleCost = 0.390101671
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
-		name = ProceduralShapeBezierCone
-		isEnabled = True
-		selectedShape = Peaked #1
-		topDiameter = 0
-		bottomDiameter = 0.5
-		length = 0.900000036
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
-		name = TankContentSwitcher
-		isEnabled = True
-		tankVolume = 0.0780203342
-		mass = 0.00530538289
-		tankType = Structural
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
-		name = GeometryPartModule
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
-		name = FARAeroPartModule
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
-		name = FARPartModule
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
-		name = KOSNameTag
-		isEnabled = True
-		nameTag = 
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
-		name = ModuleToolingPTank
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
-		name = ModuleAeroReentry
-		isEnabled = True
-		dead = False
-		crashTolerance = 8
-		internalDamage = 0
-		stagingEnabled = True
-		damageCube = 0, 0, 0, 0, 0, 0
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
-		name = ModuleShowInfo
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
 		}
 		UPGRADESAPPLIED
 		{

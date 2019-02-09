@@ -2386,7 +2386,7 @@ PART
 		isEnabled = True
 		tempColliderCenter = (0, 0, 0)
 		tempColliderSize = (0.5, 0.299999237, 0.5)
-		textureSet = GreySide
+		textureSet = BlueSide
 		shapeName = Cylinder
 		moduleCost = 0.000563719543
 		stagingEnabled = True
@@ -3287,7 +3287,7 @@ PART
 		isEnabled = True
 		tempColliderCenter = (0, 0, 0)
 		tempColliderSize = (0.5, 0.299999237, 0.5)
-		textureSet = GreySide
+		textureSet = BlueSide
 		shapeName = Cylinder
 		moduleCost = 0.000563719543
 		stagingEnabled = True
@@ -4188,7 +4188,7 @@ PART
 		isEnabled = True
 		tempColliderCenter = (0, 0, 0)
 		tempColliderSize = (0.5, 0.299999237, 0.5)
-		textureSet = GreySide
+		textureSet = BlueSide
 		shapeName = Cylinder
 		moduleCost = 0.000563719543
 		stagingEnabled = True
@@ -5089,7 +5089,7 @@ PART
 		isEnabled = True
 		tempColliderCenter = (0, 0, 0)
 		tempColliderSize = (0.5, 0.299999237, 0.5)
-		textureSet = GreySide
+		textureSet = BlueSide
 		shapeName = Cylinder
 		moduleCost = 0.000563719543
 		stagingEnabled = True
@@ -9619,9 +9619,9 @@ PART
 		operatingTime = 0
 		lastMET = 0
 		initialized = False
-		currentFlightData = 5119.45996
-		initialFlightData = 5119.45996
-		missionStartTime = 9906860.3772779815
+		currentFlightData = 5533.56982
+		initialFlightData = 5533.56982
+		missionStartTime = 11290195.859586064
 		stagingEnabled = True
 		EVENTS
 		{
