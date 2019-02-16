@@ -10,7 +10,7 @@ set label:STYLE:HSTRETCH TO True. // Fill horizontally
 
 //Azimuth, Picthover, Pitchdown angle, AP wait, End height(km)
 //Equatorial:90, 80, -10, 120, 160
-//Polar:20, 80, -7, 140, 160 
+//Polar:180, 77.5, -5, 165, 160 
 
 
 local box_azi is wndw:addhlayout().
@@ -168,7 +168,7 @@ until (TIME:SECONDS - EngineStartTime) > 120{
 Print "Starting Stabilisation: " + (TIME:SECONDS - EngineStartTime).
 unlock steering.
 SAS on.
-wait 0.5.
+wait 0.25.
 set ship:control:roll to 1.
 Until AVAILABLETHRUST < 1{
 	Wait 0.1.

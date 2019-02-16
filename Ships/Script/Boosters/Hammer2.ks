@@ -22,13 +22,13 @@ local box_pitch is wndw:addhlayout().
 
 local box_APalt is wndw:addhlayout().
 	local APalt_label is box_APalt:addlabel("Max Turn alt (km)").
-	local APaltvalue is box_APalt:ADDTEXTFIELD("450").
+	local APaltvalue is box_APalt:ADDTEXTFIELD("500").
 	set APaltvalue:style:width to 100.
 	set APaltvalue:style:height to 18.
 
 local box_LVL is wndw:addhlayout().
 	local LVL_label is box_LVL:addlabel("Level angle").
-	local LVLvalue is box_LVL:ADDTEXTFIELD("-10").
+	local LVLvalue is box_LVL:ADDTEXTFIELD("-15").
 	set LVLvalue:style:width to 100.
 	set LVLvalue:style:height to 18.
 
@@ -75,7 +75,7 @@ Wait 1. //Alow Variables to be set and Stabilise pre launch
 PRINT "Prelaunch.".
 Lock Throttle to 1.
 SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 1.
-LOCK STEERING TO r(up:pitch,up:yaw,facing:roll). //this is locked 90,90 only until the clamps are relased
+LOCK STEERING TO r(up:pitch,up:yaw,facing:roll). 
 
 //Liftoff
 	
@@ -111,21 +111,18 @@ until CurrEngineThrust > 0.99*MaxEngineThrust{ // until upto thrust or the engin
 		Shutdown. //ends the script
 	}
 }
-//Wait until Stage:Ready .
-//SAS on.
 Print "Releasing Clamps".
-Wait until Stage:Ready . // this ensures time between staging engines and clamps so they do not end up being caught up in the same physics tick
+Wait until Stage:Ready .
 STAGE. // Relase Clamps
 PRINT "Lift off!!".
 local LchAlt is ALT:RADAR.
 
 // Clear tower
 Wait UNTIL ALT:RADAR > sv_ClearanceHeight + LchAlt.
-Wait UNTIL SHIP:Q > 0.015. //Ensure past clearance height and airspeed 0.015 equates to approx 50m/s or 1.5kpa which is high enough to ensure aero stability for most craft small pitching	
+Wait UNTIL SHIP:Q > 0.015. 
 LOCK STEERING TO HEADING(sv_intAzimith, sv_anglePitchover).
 Wait 20.
 LOCK STEERING TO SRFPROGRADE.
-
 Until SHIP:Q < 0.015{
 	Wait 0.2.
 }
