@@ -58,7 +58,7 @@ Global boosterCPU is "Aethon".
 
 Print "Restart before AP: " + apwait + "s".
 Print "Stop burn at: " + endheight + "m".
-Print "Waitng for activation".
+Print "Waiting for activation".
 //wait for active
 Local holdload is false. 
 until holdload = true {

@@ -54,7 +54,7 @@ Function Continue {
   	set isDone to true.
 }
 wait 0.1.
-Global boosterCPU is "Aethon2".
+Global boosterCPU is "Aethon".
 If runmode = 0{
 
 	Print "Waiting for activation".
@@ -104,7 +104,7 @@ If runmode = 2{
 	Local transnode is ff_transfer(L_TAR).
 	local transmnv is node(hf_unfreeze(transnode[0]), hf_unfreeze(transnode[1]), hf_unfreeze(transnode[2]), hf_unfreeze(transnode[3])).
 	add transmnv.
-	wait 30.
+	wait 1.
 	Set runmode to 2.5.
 }
 
@@ -123,14 +123,14 @@ If runmode = 3{
 	local startTime is time:seconds + nextnode:eta.
 	Print "burn starts at: " + startTime.
 	wait 5.
-	wait until time:seconds > startTime - 60.
+	wait until time:seconds > startTime - 90.
 	RCS on.
 	lock steering to nextnode:burnvector.
 	wait until time:seconds > startTime.
 	lock throttle to 1.
 	Wait until Stage:Ready.
 	stage.//Start retro rockets
-	Wait 10.
+	Wait 5.
 	lock throttle to 0.
 	unlock steering.
 	RCS off.
@@ -140,7 +140,7 @@ If runmode = 3{
 }
 
 If runmode = 3.5{
-	until altitude < 141000{
+	until altitude < 121000{
 		Wait 2.
 	}
 	Set runmode to 4.
@@ -150,9 +150,11 @@ If runmode = 4{
 	Lock steering to retrograde.
 	RCS on.
 	wait 60.
-	until ALT:RADAR < 5000{
+	until ALT:RADAR < 10000{
 		Wait 2.
 	}
+	Stage.
+	wait 1.
 	ff_Para_activate().
 	RCS off.
 	wait 5.
@@ -218,7 +220,7 @@ function ff_Transfer {
 Parameter targ. //
 	Local startSearchTime is time:seconds + 120.
 	Global Scorebound is hf_LandOnPlanetscore@:bind(targ).
-  	set transfer to ff_seek(startSearchTime, ff_freeze(0), ff_freeze(0), ff_freeze(-73), Scorebound). 
+  	set transfer to ff_seek(startSearchTime, ff_freeze(0), ff_freeze(0), ff_freeze(-55), Scorebound). 
   	return transfer.
 }
 

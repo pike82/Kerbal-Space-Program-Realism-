@@ -97,7 +97,7 @@ FOR eng IN engList {  //Loops through Engines in the Vessel
 Print "Checking thrust ok".
 Local CurrEngineThrust is 0.
 Local EngineStartFalied is False.
-until CurrEngineThrust > 0.99*MaxEngineThrust{ // until upto thrust or the engines have attempted to get upto thrust for more than 5 seconds.
+until CurrEngineThrust > 0.99*MaxEngineThrust{ 
 	Set CurrEngineThrust to 0.
 	FOR eng IN engList {  //Loops through Engines in the Vessel
 		IF eng:STAGE >= STAGE:NUMBER { //Check to see if the engine is in the current Stage
@@ -129,7 +129,6 @@ Until SHIP:Q < 0.015{
 Stage. // realese fairings
 Print "Fairing relase:"+(TIME:SECONDS - EngineStartTime).
 wait 2.
-
 // unguided setup
 until ship:apoapsis > apPitchdown{
 	Wait 0.1.
@@ -138,7 +137,9 @@ LOCK STEERING TO HEADING(sv_intAzimith, pitchdown).
 until (TIME:SECONDS - EngineStartTime) > 145{
 	wait 0.5.
 }
-set ship:control:roll to 1.//spin stabilise
+If apPitchdown > 160000{
+	set ship:control:roll to 1.//spin stabilise if orbit
+}
 Until AVAILABLETHRUST < 1{
 	Wait 0.1.
 }

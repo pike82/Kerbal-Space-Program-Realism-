@@ -10,13 +10,13 @@ set label:STYLE:HSTRETCH TO True. // Fill horizontally
 
 local box_WAIT is wndw:addhlayout().
 	local WAIT_label is box_WAIT:addlabel("AP WAIT").
-	local WAITvalue is box_WAIT:ADDTEXTFIELD("35").
+	local WAITvalue is box_WAIT:ADDTEXTFIELD("55").
 	set WAITvalue:style:width to 100.
 	set WAITvalue:style:height to 18.
 
 local box_END is wndw:addhlayout().
 	local END_label is box_END:addlabel("PE END (km)").
-	local ENDvalue is box_END:ADDTEXTFIELD("260").
+	local ENDvalue is box_END:ADDTEXTFIELD("170").
 	set ENDvalue:style:width to 100.
 	set ENDvalue:style:height to 18.
 
@@ -44,11 +44,11 @@ Function Continue {
   	set isDone to true.
 }
 
-Global boosterCPU is "Aethon".
+Global boosterCPU is "Aethon2".
 
 Print "Restart before AP: " + apwait + "s".
 Print "Stop burn at: " + endheight + "m".
-Print "Waitng for activation".
+Print "Waiting for activation".
 //wait for active
 Local holdload is false. 
 until holdload = true {
@@ -62,33 +62,34 @@ until holdload = true {
 	}
 	wait 0.2.
 }
-Print "Aztec active".
+Print "Eliptic active".
 Lock Horizon to VXCL(UP:VECTOR, VELOCITY:SURFACE). //negative velocity makes it retrograde
 LOCK STEERING TO LOOKDIRUP(ANGLEAXIS(0,
             VCRS(horizon,BODY:POSITION))*horizon,
 			FACING:TOPVECTOR).//lock to prograde along horizon
 RCS on.
-Lock Throttle to 1.
+SET SHIP:CONTROL:FORE TO 0.9.//start ullage using RCS
 Wait 1.//move away from booster
-Lock Throttle to 0.
+SET SHIP:CONTROL:FORE to 0.
 ff_COMMS().
 //Circularise burn
 
 until (ETA:apoapsis) < apwait{
 	wait 0.5.
 }
-Lock Throttle to 1.
+SET SHIP:CONTROL:FORE TO 0.9.//start ullage using RCS
 Wait until Stage:Ready.
 wait 5.
+Lock Throttle to 1.
+SET SHIP:CONTROL:FORE to 0.
 Stage.//start engine
-
 until ship:periapsis > endheight{
 	Wait 0.1.
 }
 Lock Throttle to 0.
 Set SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 RCS off.
-stage.//release
+
 //Adjust orbit to ecliptic
 
 local start is 0.
@@ -100,28 +101,39 @@ local startTime is 0.
 set start to orbit:period/2 + time:seconds + 60.
 set startnode to ff_seek(start, ff_freeze(0), ff_freeze(0), ff_freeze(0), ff_LANTimeScore@).
 remove nextnode.
-
 // find manv deltav at that time.
 Set start to startnode[0].
 set transnode to ff_seek(ff_freeze(start), 0, 0, ff_freeze(0), ff_ElipticLANScore@).
 Print "transnode complete".
 set transmnv to node(hf_unfreeze(transnode[0]), hf_unfreeze(transnode[1]), hf_unfreeze(transnode[2]), hf_unfreeze(transnode[3])).
 add transmnv.
-set startTime to time:seconds + nextnode:eta - ff_Burn_Time(nextnode:deltaV:mag/ 2, 198, 1, 1).
+set startTime to time:seconds + nextnode:eta - ff_Burn_Time(nextnode:deltaV:mag/ 2, 278, 35.1, 1).
 Print "burn starts at: " + startTime.
 Set warp to 0.
 wait until time:seconds > startTime - 60.
 RCS on.
 lock steering to nextnode:burnvector.
-wait until time:seconds > startTime.//RCS ullage Start
-stage.//start engine
+wait until time:seconds > startTime.
 lock throttle to 1.
+Local englist is List().
+LIST ENGINES IN engList. 
+FOR eng IN engList {  
+	Print "eng:STAGE:" + eng:STAGE.
+	Print STAGE:NUMBER.
+	IF eng:STAGE >= STAGE:NUMBER { 
+		eng:activate. 
+		Print "Engine". 
+	}
+}
 until (hf_isManeuverComplete(nextnode) = true) or (nextnode:burnvector:mag < 0.25) {
 }
 lock throttle to 0.
 unlock steering.
 RCS off.
 remove nextnode.
+wait 1.
+Stage. //move to RCS
+
 
 //Change inclination but not LAN
 //find highest LAT for LAN change
@@ -129,13 +141,13 @@ Print "Commencing LAN Change".
 Set start to orbit:period/2 + time:seconds + 60.
 set startnode to ff_seek(start, ff_freeze(0), ff_freeze(0), ff_freeze(0), ff_IncTimeScore@).
 remove nextnode.
-
+wait 1.
 // find manv deltav at that time.
 Set start to startnode[0].
 set transnode to ff_seek(ff_freeze(start), 0, 0, 0, ff_ElipticIncScore@).
 set transmnv to node(hf_unfreeze(transnode[0]), hf_unfreeze(transnode[1]), hf_unfreeze(transnode[2]), hf_unfreeze(transnode[3])).
 add transmnv.
-set startTime to time:seconds + transmnv:eta - ff_Burn_Time(nextnode:deltaV:mag/ 2, 198).
+set startTime to time:seconds + nextnode:eta - (ff_Burn_Time(nextnode:deltaV:mag/ 2, 278, 35.1, 1)).
 Print "burn starts at: " + startTime.
 Set warp to 0.
 wait until time:seconds > startTime - 60.
@@ -151,8 +163,8 @@ lock throttle to 0.
 unlock steering.
 RCS off.
 remove nextnode.
-wait 1.
-Print "burns complete shutting down".
+wait 10.
+Print "burn's complete shutting down".
 shutdown.
 
 function ff_LANTimeScore {
@@ -287,15 +299,16 @@ function hf_neighbors {
 }  /// End Function	
 
 function hf_isManeuverComplete {
-	parameter mnv.
-	if not(defined originalVector) or originalVector = -1 {
-		declare global originalVector to mnv:burnvector.
-	}
-	if vang(originalVector, mnv:burnvector) > 45 {
-		declare global originalVector to -1.
-		return true.
-	}
-	return false.
+  parameter mnv.
+  if not(defined originalVector) or originalVector = -1 {
+    declare global originalVector to mnv:burnvector.
+  }
+  if vang(originalVector, mnv:burnvector) > 90 {
+    declare global originalVector to -1.
+	Print "Mnv Stop".
+    return true.
+  }
+  return false.
 }
 
 Function ff_stage_delta_v {
@@ -375,10 +388,10 @@ Print "Burntime".
 		}
 	}
 	if engine_count = 0{
-		return 1. //return something to prevent error.
+		return 1. //return something to prevent error if above calcuation is used.
 	}
-	set isp to isp / engine_count. //assumes only one type of engine in cluster
-	set thrust to thrust * 1000. // Engine Thrust (kg * m/s²)
+	set isp to isp. //assumes only one type of engine in cluster
+	set thrust to thrust * 1000 * engine_count. // Engine Thrust (kg * m/s²)
 	Print isp.
 	Print Thrust.
 	return g * m * isp * (1 - e^(-dV/(g*isp))) / thrust.
@@ -410,4 +423,16 @@ Function hf_360AngDiff{
 Function hf_180AngDiff{
 	Parameter a, b.
 	return 90 - abs(abs(a-b)-90). 
+}
+
+Function ff_Avionics_off{
+	Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+	Local M is P:GETMODULE("ModuleProceduralAvionics").
+	M:DOEVENT("Shutdown Avionics").
+}
+
+Function ff_Avionics_on{
+	Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+	Local M is P:GETMODULE("ModuleProceduralAvionics").
+	M:DOEVENT("Activate Avionics").
 }

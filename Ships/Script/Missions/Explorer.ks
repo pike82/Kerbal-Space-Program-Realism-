@@ -10,13 +10,13 @@ set label:STYLE:HSTRETCH TO True. // Fill horizontally
 
 local box_WAIT is wndw:addhlayout().
 	local WAIT_label is box_WAIT:addlabel("AP WAIT").
-	local WAITvalue is box_WAIT:ADDTEXTFIELD("55").
+	local WAITvalue is box_WAIT:ADDTEXTFIELD("35").
 	set WAITvalue:style:width to 100.
 	set WAITvalue:style:height to 18.
 
 local box_END is wndw:addhlayout().
 	local END_label is box_END:addlabel("PE END (km)").
-	local ENDvalue is box_END:ADDTEXTFIELD("170").
+	local ENDvalue is box_END:ADDTEXTFIELD("160").
 	set ENDvalue:style:width to 100.
 	set ENDvalue:style:height to 18.
 
@@ -74,11 +74,11 @@ Function Continue {
   	set isDone to true.
 }
 
-Global boosterCPU is "Aethon3".
+Global boosterCPU is "Aethon2".
 
 If runmode = 0{
 
-	Print "Waitng for activation".
+	Print "Waiting for activation".
 	//wait for active
 	Local holdload is false. 
 	until holdload = true {
@@ -125,7 +125,8 @@ If runmode = 0{
 	Print "Engine shutdown".
 	Lock Throttle to 0.
 	RCS off.
-	Set runmode to 1.	
+	Set runmode to 1.
+	ff_Avionics_off().	
 }
 If runmode = 1{
 	Local transnode is ff_transfer(L_TAR).
@@ -146,10 +147,11 @@ If runmode = 1.5{
 }
 
 If runmode = 2{
-	local startTime is time:seconds + nextnode:eta - (ff_Burn_Time(nextnode:deltaV:mag / 2, 291, 71, 1)).
+	local startTime is time:seconds + nextnode:eta - (ff_Burn_Time(nextnode:deltaV:mag / 2, 278, 35.1, 1)).
 	Print "burn starts at: " + startTime.
 	wait 5.
 	wait until time:seconds > startTime - 120.
+	ff_Avionics_on().
 	RCS on.
 	lock steering to nextnode:burnvector.
 	wait until time:seconds > startTime-10.//RCS ullage Start
@@ -171,20 +173,19 @@ If runmode = 2{
 	  	wait 0.01.
 	}
 	lock throttle to 0.
+	wait 1.
 	unlock steering.
 	RCS off.
 	remove nextnode.
-	Stage.//release second stage
-	wait until stage:ready.
-	Stage.//activate rcs engine
 	Set runmode to 2.5.
+	ff_Avionics_off().
 }
 
 If runmode = 2.5{
 	until orbit:body = sun{
 		Wait 10.
 	}
-	Local corr_time is time:seconds + (ship:orbit:period / 6).
+	Local corr_time is time:seconds + (ship:orbit:period / 20).
 	Print "Correction man at:" + corr_time.
 	wait 5.
 	add node(corr_time,0,0,0).
@@ -192,13 +193,6 @@ If runmode = 2.5{
 		Wait 10.
 	}
 	remove nextnode.
-	Set runmode to 3.
-}
-
-If runmode = 3{
-	Local transnode is ff_transfer(L_TAR).
-	local transmnv is node(transnode[0], transnode[1], transnode[2], transnode[3]).
-	add transmnv.
 	Set runmode to 3.5.
 }
 
@@ -214,10 +208,11 @@ If runmode = 3.5{
 }
 
 If runmode = 4{
-	local startTime is time:seconds + nextnode:eta - (ff_Burn_Time(nextnode:deltaV:mag / 2, 258, 1.5, 1)).
+	local startTime is time:seconds + nextnode:eta - (ff_Burn_Time(nextnode:deltaV:mag / 2, 198, 0.1, 1)).
 	Print "burn starts at: " + startTime.
 	wait 5.
 	wait until time:seconds > startTime - 60.
+	ff_Avionics_on().
 	RCS on.
 	lock steering to nextnode:burnvector.
 	wait until time:seconds > startTime.
@@ -235,6 +230,7 @@ If runmode = 4{
 	RCS off.
 	remove nextnode.
 	Set runmode to 5.
+	ff_Avionics_off().
 }
 
 If runmode = 5{
@@ -245,6 +241,7 @@ If runmode = 5{
 	}
 
 	Print "In SOI correction burn".
+	ff_Avionics_on().
 	wait 60.
 	local normalVec is vcrs(ship:velocity:orbit,-body:position).
 	local radialVec is vcrs(ship:velocity:orbit,normalVec).
@@ -255,11 +252,11 @@ If runmode = 5{
 		RCS on.
 		lock Steering to -radialVec.
 		wait 20.
-		lock throttle to 1.
+		SET SHIP:CONTROL:FORE to 0.9.
 		Until ship:orbit:periapsis > endPE{
 			Wait 0.01.
 		}
-		lock throttle to 0.
+		SET SHIP:CONTROL:FORE to 0.
 		RCS off.
 	}
 	wait 1.0.
@@ -268,14 +265,15 @@ If runmode = 5{
 		RCS on.
 		lock Steering to radialVec.
 		wait 20.
-		lock throttle to 1.
+		SET SHIP:CONTROL:FORE to 0.9.
 		Until ship:orbit:periapsis > endPE{
 			Wait 0.01.
 		}
-		lock throttle to 0.
+		SET SHIP:CONTROL:FORE to 0.
 		RCS off.
 	}
 	Set runmode to 6.
+	ff_Avionics_off().
 }
 
 If Runmode = 6{
@@ -283,7 +281,7 @@ If Runmode = 6{
 	Print "PE Burn Setup".
 	Local orbspeed is sqrt(Body:MU/(endPE + body:radius)).
 	Local BurnSpeed is velocityat(ship, eta:periapsis):orbit:mag - orbspeed.
-	Set corr_time to time:seconds + eta:periapsis - (ff_Burn_Time(nextnode:deltaV:mag / 2, 258, 1.5, 1)).
+	Set corr_time to time:seconds + eta:periapsis - (ff_Burn_Time(BurnSpeed / 2, 278, 35.1, 1)).
 	Print "Dv: " +BurnSpeed.
 	Print corr_time. 
 	wait 5.
@@ -294,28 +292,42 @@ If Runmode = 6{
 		wait 1.
 		Set Counter to counter +1.
 	}
-	local startTime is time:seconds + nextnode:eta - (ff_Burn_Time(nextnode:deltaV:mag / 2, 258, 1.5, 1)).
+	local startTime is time:seconds + nextnode:eta - (ff_Burn_Time(BurnSpeed / 2, 278, 35.1, 1)).
 	Print "burn starts at: " + startTime.
 	wait 5.
 	wait until time:seconds > startTime - 70.
-	lock steering to nextnode:deltav.
+	ff_Avionics_on().
+	lock steering to retrograde.
 	RCS on.
 	wait 70.
 	wait until time:seconds > startTime.
-	Lock Throttle to 1.
-	until hf_isManeuverComplete(nextnode) {
-			if ship:orbit:HASNEXTPATCH {
-				if ship:orbit:nextPatch:periapsis < endPE {
-					Break.
-				}
+	Local englist is List().
+	LIST ENGINES IN engList. 
+	FOR eng IN engList {  
+		Print "eng:STAGE:" + eng:STAGE.
+		Print STAGE:NUMBER.
+		IF eng:STAGE >= STAGE:NUMBER { 
+			eng:activate. 
+			Print "Engine". 
 		}
-		wait 0.001.
 	}
+	lock throttle to 1.
+	SET SHIP:CONTROL:FORE TO 0.0.
+	until (ship:orbit:apoapsis < 1.2*endPE) and (ship:orbit:apoapsis > 0){
+		if (AVAILABLETHRUST*1000) < 1 {
+			Stage.//release second stage
+			wait until stage:ready.
+			Stage.//activate rcs engine
+		}
+		wait 0.1.
+	}
+	wait 200.
 	lock throttle to 0.
 	unlock steering.
 	RCS off.
 	remove nextnode.
 	set runmode to 7.
+	ff_Avionics_off().
 }
 
 if runmode = 7{
@@ -561,3 +573,15 @@ FUNCTION ff_COMMS {
 		}.
 	}
 } // End of Function
+
+Function ff_Avionics_off{
+	Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+	Local M is P:GETMODULE("ModuleProceduralAvionics").
+	M:DOEVENT("Shutdown Avionics").
+}
+
+Function ff_Avionics_on{
+	Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+	Local M is P:GETMODULE("ModuleProceduralAvionics").
+	M:DOEVENT("Activate Avionics").
+}

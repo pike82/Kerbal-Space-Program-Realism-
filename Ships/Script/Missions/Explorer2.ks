@@ -78,7 +78,7 @@ Global boosterCPU is "Aethon3".
 
 If runmode = 0{
 
-	Print "Waitng for activation".
+	Print "Waiting for activation".
 	//wait for active
 	Local holdload is false. 
 	until holdload = true {
@@ -193,13 +193,6 @@ If runmode = 2.5{
 		Wait 10.
 	}
 	remove nextnode.
-	Set runmode to 3.
-}
-
-If runmode = 3{
-	Local transnode is ff_transfer(L_TAR).
-	local transmnv is node(transnode[0], transnode[1], transnode[2], transnode[3]).
-	add transmnv.
 	Set runmode to 3.5.
 }
 
@@ -562,3 +555,15 @@ FUNCTION ff_COMMS {
 		}.
 	}
 } // End of Function
+
+Function ff_Avionics_off{
+	Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+	Local M is P:GETMODULE("ModuleProceduralAvionics").
+	M:DOEVENT("Shutdown Avionics").
+}
+
+Function ff_Avionics_on{
+	Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+	Local M is P:GETMODULE("ModuleProceduralAvionics").
+	M:DOEVENT("Activate Avionics").
+}

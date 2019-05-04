@@ -9,10 +9,16 @@ set label:STYLE:ALIGN TO "CENTER".
 set label:STYLE:HSTRETCH TO True. // Fill horizontally
 
 local box_END is wndw:addhlayout().
-	local END_label is box_END:addlabel("AP Transistion END (km)").
-	local ENDvalue is box_END:ADDTEXTFIELD("39000").
+	local END_label is box_END:addlabel("Target Circ height (km)").
+	local ENDvalue is box_END:ADDTEXTFIELD("1000").
 	set ENDvalue:style:width to 100.
 	set ENDvalue:style:height to 18.
+
+local box_INC is wndw:addhlayout().
+	local INC_label is box_INC:addlabel("Target Inclination").
+	local INCvalue is box_INC:ADDTEXTFIELD("45").
+	set INCvalue:style:width to 100.
+	set INCvalue:style:height to 18.
 
 local somebutton is wndw:addbutton("Confirm").
 set somebutton:onclick to Continue@.
@@ -23,6 +29,7 @@ LOCAL isDone IS FALSE.
 UNTIL isDone {
 	WAIT 1.
 }
+wait 20.
 
 Function Continue {
 
@@ -30,14 +37,18 @@ Function Continue {
 		set val to val:tonumber(0).
 		Global endheight is val*1000.
 
+		set val to INCvalue:text.
+		set val to val:tonumber(0).
+		Global endINC is val.
+
 	wndw:hide().
   	set isDone to true.
 }
 
-Global boosterCPU is "Aethon2".
+Global boosterCPU is "Aethon".
 
 Print "Stop burn at: " + endheight + "m".
-Print "Waitng for activation".
+Print "Waiting for activation".
 //wait for active
 Local holdload is false. 
 until holdload = true {
@@ -57,17 +68,18 @@ Set SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 ff_COMMS().
 
 /////High tranfer burn
-
 Local transnode is ff_Transfer ().
-local startTime is time:seconds + nextnode:eta - (ff_Burn_Time(nextnode:deltaV:mag /2, 281, 71, 1) ).
+local startTime is time:seconds + nextnode:eta - (ff_Burn_Time(nextnode:deltaV:mag /2, 270, 33.4, 1) ).
 Print "burn starts at: " + startTime.
 Print time:seconds.
 Print nextnode:eta.
 Print nextnode:deltaV:mag.
+ff_Avionics_off().
 wait 5.
 warpto(startTime - 75).
 wait until time:seconds > startTime - 70.
 lock steering to nextnode:deltav. //burnvector
+ff_Avionics_on().
 RCS on.
 wait 60.
 SET SHIP:CONTROL:FORE to 0.9.
@@ -85,6 +97,7 @@ until hf_isManeuverComplete(nextnode) {
 lock throttle to 0.
 unlock steering.
 RCS off.
+wait 0.001.
 remove nextnode.
 wait 1.0.
 Stage. // swicth stages to RCS stage
@@ -94,21 +107,27 @@ wait 15.
 /////refine burn.
 
 Local transnode is ff_LowerTransfer ().
-local startTime is time:seconds + nextnode:eta - (ff_Burn_Time(nextnode:deltaV:mag/ 2, 258, 1.5, 1) ).
-Print "burn starts at: " + startTime.
+local startTime is time:seconds + nextnode:eta - (ff_Burn_Time(nextnode:deltaV:mag/ 2, 198, 0.957, 1) ).
+Print "refine burn starts at: " + startTime.
+ff_Avionics_off().
 wait 5.
 stage.
 warpto(startTime - 75).
 wait until time:seconds > startTime - 70.
 lock steering to nextnode:deltav.
+ff_Avionics_on().
 RCS on.
 wait 70.
 wait until time:seconds > startTime.
-Lock Throttle to 1.
-until hf_isManeuverComplete(nextnode) {
+Print "RCS Throttle up".
+Set throttle to 1.
+Set SHIP:CONTROL:PILOTMAINTHROTTLE TO 1.
+until nextnode:deltav:mag < 0.75 {
 	wait 0.001.
 }
-lock throttle to 0.
+Print "Node complete".
+Set throttle to 0.
+Set SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 unlock steering.
 RCS off.
 remove nextnode.
@@ -138,28 +157,28 @@ function ff_Transfer {
 	local startSearchTime is time:seconds + eta:apoapsis.
 	Print "startSearchTime" + startSearchTime.
 	wait 10.
-	local transfer is ff_seek(ff_freeze(startSearchTime), 0, 0, 2600, hf_APScore@).
+	local transfer is ff_seek(ff_freeze(startSearchTime), 0, 0, 1000, hf_APScore@).
 	return transfer.
 }
 
 function ff_LowerTransfer {
 	Local start is time:seconds + eta:apoapsis.
-	local transfer is ff_seek(ff_freeze(start), ff_freeze(0), ff_freeze(0), 0, hf_PerScore@).
+	local transfer is ff_seek(ff_freeze(start), ff_freeze(0), ff_freeze(0), 0, hf_CircScore@).
 	return transfer.
 }
 
 function hf_APScore{
   parameter mnv.
   Local result is 0.
-	Local result is -(63-abs(mnv:orbit:inclination)) - (abs(mnv:orbit:apoapsis - endheight)/10000).// - nextnode:deltav:mag.
+	Local result is -(endINC-abs(mnv:orbit:inclination)) - (abs(mnv:orbit:apoapsis - endheight)/10000).// - nextnode:deltav:mag.
 	Print result.
   return result.
 }
 
-function hf_PerScore{
+function hf_CircScore{
   parameter mnv.
   Local result is 0.
-	Local result is -abs(mnv:orbit:period -43080).// - nextnode:deltav:mag.
+	Local result is -mnv:orbit:eccentricity.
 	Print result.
   return result.
 }
@@ -262,6 +281,7 @@ function hf_isManeuverComplete {
   }
   if vang(originalVector, mnv:burnvector) > 90 {
     declare global originalVector to -1.
+	Print "Mnv Stop".
     return true.
   }
   return false.
@@ -287,10 +307,10 @@ Print "Burntime".
 		}
 	}
 	if engine_count = 0{
-		return 1. //return something to prevent error.
+		return 1. //return something to prevent error if above calcuation is used.
 	}
-	set isp to isp / engine_count. //assumes only one type of engine in cluster
-	set thrust to thrust * 1000. // Engine Thrust (kg * m/s²)
+	set isp to isp. //assumes only one type of engine in cluster
+	set thrust to thrust * 1000 * engine_count. // Engine Thrust (kg * m/s²)
 	Print isp.
 	Print Thrust.
 	return g * m * isp * (1 - e^(-dV/(g*isp))) / thrust.
@@ -302,4 +322,16 @@ PARAMETER a.
   UNTIL a >= 0 { SET a TO a + 360. }
   RETURN MOD(a,360).
   
+}
+
+Function ff_Avionics_off{
+	Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+	Local M is P:GETMODULE("ModuleProceduralAvionics").
+	M:DOEVENT("Shutdown Avionics").
+}
+
+Function ff_Avionics_on{
+	Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+	Local M is P:GETMODULE("ModuleProceduralAvionics").
+	M:DOEVENT("Activate Avionics").
 }

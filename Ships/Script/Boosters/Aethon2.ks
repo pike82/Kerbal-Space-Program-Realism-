@@ -12,7 +12,7 @@ FOR Part IN partList {
 Print core:tag.
 local wndw is gui(300).
 set wndw:x to 400. //window start position
-set wndw:y to 120.
+set wndw:y to 20.
 
 local label is wndw:ADDLABEL("Enter Booster Values").
 set label:STYLE:ALIGN TO "CENTER".
@@ -26,7 +26,7 @@ local box_azi is wndw:addhlayout().
 
 local box_pitch is wndw:addhlayout().
 	local pitch_label is box_pitch:addlabel("Start Pitch").
-	local pitchvalue is box_pitch:ADDTEXTFIELD("86").
+	local pitchvalue is box_pitch:ADDTEXTFIELD("86.75").
 	set pitchvalue:style:width to 100.
 	set pitchvalue:style:height to 18.
 
@@ -37,14 +37,20 @@ local box_APalt is wndw:addhlayout().
 	set APaltvalue:style:height to 18.
 
 local box_LVL is wndw:addhlayout().
-	local LVL_label is box_LVL:addlabel("Pitch Down angle").
-	local LVLvalue is box_LVL:ADDTEXTFIELD("-7").
+	local LVL_label is box_LVL:addlabel("Level angle").
+	local LVLvalue is box_LVL:ADDTEXTFIELD("0").
 	set LVLvalue:style:width to 100.
 	set LVLvalue:style:height to 18.
 
+local box_LVL_Sp is wndw:addhlayout().
+	local LVL_Sp_label is box_LVL_Sp:addlabel("Level Speed").
+	local LVL_Spvalue is box_LVL_Sp:ADDTEXTFIELD("6000").
+	set LVL_Spvalue:style:width to 100.
+	set LVL_Spvalue:style:height to 18.
+
 local box_TAR is wndw:addhlayout().
 	local TAR_label is box_TAR:addlabel("Launch Target").
-	local TARvalue is box_TAR:ADDTEXTFIELD("Moon").
+	local TARvalue is box_TAR:ADDTEXTFIELD("Earth").
 	set TARvalue:style:width to 100.
 	set TARvalue:style:height to 18.
 
@@ -53,6 +59,24 @@ local box_OFF is wndw:addhlayout().
 	local OFFvalue is box_OFF:ADDTEXTFIELD("0.2").
 	set OFFvalue:style:width to 100.
 	set OFFvalue:style:height to 18.
+
+local box_Circ is wndw:addhlayout().
+	local Circ_label is box_Circ:addlabel("Booster Cric?").
+	local Circvalue is box_Circ:ADDTEXTFIELD("False").
+	set Circvalue:style:width to 100.
+	set Circvalue:style:height to 18.
+
+local box_Circ_Sp is wndw:addhlayout().
+	local Circ_Sp_label is box_Circ_Sp:addlabel("Booster Cric Speed").
+	local Circ_Spvalue is box_Circ_Sp:ADDTEXTFIELD("7700").
+	set Circ_Spvalue:style:width to 100.
+	set Circ_Spvalue:style:height to 18.
+
+local box_PEalt is wndw:addhlayout().
+	local PEalt_label is box_PEalt:addlabel("Booster Circ alt (km)").
+	local PEaltvalue is box_PEalt:ADDTEXTFIELD("160").
+	set PEaltvalue:style:width to 100.
+	set PEaltvalue:style:height to 18.
 
 local somebutton is wndw:addbutton("Confirm").
 set somebutton:onclick to Continue@.
@@ -81,6 +105,10 @@ Function Continue {
 		set val to val:tonumber(0).
 		set pitchdown to val.
 
+		set val to LVL_Spvalue:text.
+		set val to val:tonumber(0).
+		set pitchdown_Sp to val.
+
 		set val to TARvalue:text.
 		If val = "Ecliptic"{
 			set val to vessel(val).
@@ -93,6 +121,17 @@ Function Continue {
 		set val to val:tonumber(0).
 		set L_OFF to val.
 
+		set val to Circvalue:text.
+		set Circ_T to val.
+
+		set val to Circ_Spvalue:text.
+		set val to val:tonumber(0).
+		set Circ_Sp to val.
+
+		set val to PEaltvalue:text.
+		set val to val:tonumber(0).
+		set PEEnd to val*1000.
+
 	wndw:hide().
   	set isDone to true.
 }
@@ -103,7 +142,7 @@ Print "Level turn at: " + apPitchdown + "m".
 Print "Pitching at: " + pitchdown.
 Print "Target: " + L_TAR.
 Print "Offset: " + L_OFF.
-Local sv_ClearanceHeight is 30. //tower clearance height
+Local sv_ClearanceHeight is 130. //tower clearance height
 
 // Mission Values
 
@@ -140,6 +179,7 @@ Local EngineStartFalied is False.
 until CurrEngineThrust > 0.99*MaxEngineThrust{ 
 	Set CurrEngineThrust to 0.
 	FOR eng IN engList { 
+		//Print eng:name.
 		IF eng:STAGE >= STAGE:NUMBER { 
 			SET CurrEngineThrust TO CurrEngineThrust + eng:THRUST. 
 		}
@@ -164,7 +204,7 @@ LOCK STEERING TO HEADING(sv_intAzimith, 90).
 Wait UNTIL SHIP:Q > 0.015. 
 LOCK STEERING TO HEADING((sv_intAzimith-0), sv_anglePitchover).
 Print "Pitchover: " + (TIME:SECONDS - EngineStartTime).
-Wait 10.
+Wait 3.
 lock pitch to 90 - VANG(SHIP:UP:VECTOR, SHIP:VELOCITY:SURFACE).
 LOCK STEERING TO heading(sv_intAzimith, pitch) .
 Print "Gravity Turn: " + (TIME:SECONDS - EngineStartTime).
@@ -188,48 +228,52 @@ Until SHIP:Q < 0.01{
 }
 Print "Fairings Delpolyed: " + (TIME:SECONDS - EngineStartTime).
 Stage.
-until ship:apoapsis > apPitchdown or (AVAILABLETHRUST < 0.1){
+until ship:apoapsis > apPitchdown{
 	Wait 0.1.
 }
 Print "locking Pitch to zero".
 LOCK STEERING TO HEADING(sv_intAzimith, 0).
-until SHIP:VELOCITY:ORBIT:mag > 5000 or (AVAILABLETHRUST < 0.1){
-	Wait 1.
-}
-Print "locking Pitch down".
-LOCK STEERING TO HEADING(sv_intAzimith, pitchdown).
-until (SHIP:VELOCITY:ORBIT:mag > 7700) or (AVAILABLETHRUST < 0.1){
-	Wait 0.1.
-}
-LOCK STEERING TO HEADING(sv_intAzimith, 0).
-Print "7700 m/s".
-Print "next loop".
-FOR eng IN engList { 
-	If eng:FLAMEOUT{
-	} 
-	Else {
-		if eng:name = "liquidEngine" { //Check to see if the engine is in the current Stage
-			eng:shutdown. // Shutdown LR105 but keep the LR 101 going.
-			Print "Engine Shut down".
-		}
-	}
-	wait 0.01.
-}
 
-Print "MECO and vernier control: " + (TIME:SECONDS - EngineStartTime).
-until ship:periapsis > 170000{
-	if AVAILABLETHRUST < 0.1{
-		Print "Out of fuel".
-		Stage.
-		Break.
+If circ_t = "True"{
+	Print "Booster Circ".
+	until SHIP:VELOCITY:ORBIT:mag > pitchdown_Sp{
+		Wait 0.1.
 	}
-	Wait 0.1.
+	Print "locking Pitch down".
+	LOCK STEERING TO HEADING(sv_intAzimith, pitchdown).
+	until SHIP:VELOCITY:ORBIT:mag > Circ_Sp{
+		Wait 0.1.
+	}
+	LOCK STEERING TO HEADING(sv_intAzimith, 0).
+	Print "7700 m/s".
+	Print "next loop".
+	FOR eng IN engList { 
+		If eng:FLAMEOUT{
+		} 
+		Else {
+			Print eng:name + "2".
+			if eng:name = "liquidEngine" or eng:name = "Bluedog.Atlas.LR105"{ //Check to see if the engine is in the current Stage
+				eng:shutdown.
+				Print "Engine Shut down".
+			}
+		}
+		wait 0.01.
+	}
+	Print "MECO and vernier control: " + (TIME:SECONDS - EngineStartTime).
+	until ship:periapsis > PEEnd{
+		Wait 0.1.
+		if AVAILABLETHRUST < 1 {Break.}
+	}	
+} Else{
+	Until AVAILABLETHRUST < 1{
+		Wait 0.1.
+	}
 }
+Print "Ascent finished".
 Lock Throttle to 0.
 Set SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 wait 1.0.
 Stage.
-
 Print "Orbit Reached".
 Shutdown. //ends the script
 

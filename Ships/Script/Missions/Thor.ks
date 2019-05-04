@@ -9,8 +9,8 @@ set label:STYLE:ALIGN TO "CENTER".
 set label:STYLE:HSTRETCH TO True. // Fill horizontally
 
 local box_MoonEND is wndw:addhlayout().
-	local MoonEND_label is box_MoonEND:addlabel("Moon PE END (km)").
-	local MoonENDvalue is box_MoonEND:ADDTEXTFIELD("20").
+	local MoonEND_label is box_MoonEND:addlabel("Moon PE start (s)").
+	local MoonENDvalue is box_MoonEND:ADDTEXTFIELD("90").
 	set MoonENDvalue:style:width to 100.
 	set MoonENDvalue:style:height to 18.
 
@@ -28,14 +28,13 @@ Function Continue {
 
 		set val to MoonENDvalue:text.
 		set val to val:tonumber(0).
-		set endPE to val*1000.
+		set endPE to val.
 
 	wndw:hide().
   	set isDone to true.
 }
 Global boosterCPU is "ThorS".
-
-Print "Waitng for activation".
+Print "Waiting for activation".
 //wait for active
 Local holdload is false. 
 until holdload = true {
@@ -62,7 +61,7 @@ stage.
 wait until stage:ready.
 wait 1.0.
 stage.
-ff_CAB(90).
+ff_CAB(endPE).
 ff_SuBurn().
 wait 2.
 ff_SuBurn().
@@ -236,7 +235,7 @@ Function ff_CAB{
 		Print "Pitch: " + highpitch.
 		wait 0.01.
 	}
-	Until SHIP:GROUNDSPEED < 1000{
+	Until SHIP:GROUNDSPEED < 1100{
 		//Create PID to adjust the craft pitch (without thrusting downward) which maintains a vertical velocity of zero and regulates the velocity of burn height change if not zero reventing a pitch above the horizontal.		
 		Set dpitch TO PIDVV:UPDATE(TIME:SECONDS, verticalspeed). //Get the PID on the AlT diff as desired vertical velocity
 		Set highpitch to max(highpitch + dpitch,0). // Ensure the pitch does not go below zero as gravity will efficently lower the veritcal velocity if required
@@ -246,7 +245,7 @@ Function ff_CAB{
 		Print "Pitch: " + highpitch.
 		wait 0.01.
 	}
-	Set PIDVV:SETPOINT to -50. // we want the altitude to start reducing.
+	Set PIDVV:SETPOINT to -100. // we want the altitude to start reducing.
 	Until SHIP:GROUNDSPEED < 50 {
 		//Create PID to adjust the craft pitch (without thrusting downward) which maintains a vertical velocity of zero and regulates the velocity of burn height change if not zero reventing a pitch above the horizontal.		
 		Set dpitch TO PIDVV:UPDATE(TIME:SECONDS, verticalspeed). //Get the PID on the AlT diff as desired vertical velocity
@@ -359,4 +358,16 @@ function ff_Gravity{
 function ff_quadraticPlus {
 	parameter a, b, c.
 	return (b - sqrt(max(b ^ 2 - 4 * a * c, 0))) / (2 * a).
+}
+
+Function ff_Avionics_off{
+	Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+	Local M is P:GETMODULE("ModuleProceduralAvionics").
+	M:DOEVENT("Shutdown Avionics").
+}
+
+Function ff_Avionics_on{
+	Local P is SHIP:PARTSNAMED(core:part:Name)[0].
+	Local M is P:GETMODULE("ModuleProceduralAvionics").
+	M:DOEVENT("Activate Avionics").
 }

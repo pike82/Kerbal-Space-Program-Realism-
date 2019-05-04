@@ -56,7 +56,7 @@ Function Continue {
 Global boosterCPU is "Aethon3".
 Global PrimTarget is moon.
 
-Print "Waitng for activation".
+Print "Waiting for activation".
 //wait for active
 Local holdload is false. 
 until holdload = true {

@@ -55,7 +55,7 @@ Function Continue {
 }
 Global boosterCPU is "Aethon3".
 
-Print "Waitng for activation".
+Print "Waiting for activation".
 //wait for active
 Local holdload is false. 
 until holdload = true {
